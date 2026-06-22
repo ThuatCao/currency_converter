@@ -2,7 +2,9 @@ import 'package:currency_converter/data/database.dart';
 import 'package:currency_converter/di.dart';
 import 'package:currency_converter/theme/app_theme.dart';
 import 'package:currency_converter/views/currency_view.dart';
+import 'package:currency_converter/constants/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +52,18 @@ class _MyAppState extends State<MyApp> {
       theme: AppTheme.lightTheme(),
       darkTheme: AppTheme.darkTheme(),
       themeMode: _themeMode,
+      // Localization setup
+      locale: const Locale('vi', 'VN'),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('vi', 'VN'),
+        Locale('en', 'US'),
+      ],
       home: CurrencyScreen(onThemeToggle: _toggleTheme),
     );
   }

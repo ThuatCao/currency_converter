@@ -1,11 +1,12 @@
 import 'package:currency_converter/constants/color_util.dart';
+import 'package:currency_converter/constants/app_localizations.dart';
 import 'package:currency_converter/viewmodels/currency_converter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../data/database.dart';
 import '../di.dart';
 import '../viewmodels/currency_bloc.dart';
+import 'widgets/convert_widget.dart';
 
 class CurrencyScreen extends StatelessWidget {
   final Function(bool)? onThemeToggle;
@@ -40,7 +41,6 @@ class CurrencyView extends StatefulWidget {
 
 class _CurrencyViewState extends State<CurrencyView> {
   bool _isDarkMode = false;
-  final TextEditingController _amountController = TextEditingController();
 
   @override
   void didChangeDependencies() {
@@ -50,7 +50,6 @@ class _CurrencyViewState extends State<CurrencyView> {
 
   @override
   void dispose() {
-    _amountController.dispose();
     super.dispose();
   }
 
@@ -66,13 +65,13 @@ class _CurrencyViewState extends State<CurrencyView> {
         listener: (context, state) {},
         builder: (context, currencyState) {
           if (currencyState is CurrencyFirstLoadProgress) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(color: primaryColor),
-                  SizedBox(height: 16),
-                  Text("Đang đồng bộ tỷ giá lần đầu từ Server..."),
+                  const CircularProgressIndicator(color: primaryColor),
+                  const SizedBox(height: 16),
+                  Text(context.tr('loading_rates')),
                 ],
               ),
             );
@@ -101,7 +100,7 @@ class _CurrencyViewState extends State<CurrencyView> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      "Ứng dụng sẽ tự động tải lại sau ${currencyState.retryCountdown} giây...",
+                      "${context.tr('retry_in')} ${currencyState.retryCountdown} ${context.tr('retry_seconds')}",
                       style: const TextStyle(color: Colors.grey, fontSize: 14),
                     ),
                     const SizedBox(height: 24),
@@ -112,7 +111,7 @@ class _CurrencyViewState extends State<CurrencyView> {
                         );
                       },
                       icon: const Icon(Icons.refresh),
-                      label: const Text("Thử lại ngay"),
+                      label: Text(context.tr('retry_now')),
                     ),
                   ],
                 ),
@@ -138,9 +137,9 @@ class _CurrencyViewState extends State<CurrencyView> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "Tỷ giá Tiền Tệ",
-                          style: TextStyle(
+                        Text(
+                          context.tr('exchange_rate'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                           ),
@@ -168,7 +167,7 @@ class _CurrencyViewState extends State<CurrencyView> {
                         InitializedAppCurrencyEvent(),
                       );
                     },
-                    tooltip: 'Reload',
+                    tooltip: context.tr('reload'),
                   ),
                   IconButton(
                     icon: Icon(
@@ -177,7 +176,7 @@ class _CurrencyViewState extends State<CurrencyView> {
                       color: _isDarkMode ? primaryColor : secondaryColor,
                     ),
                     onPressed: _toggleTheme,
-                    tooltip: _isDarkMode ? 'Light Mode' : 'Dark Mode',
+                    tooltip: _isDarkMode ? context.tr('light_mode') : context.tr('dark_mode'),
                   ),
                   const SizedBox(width: 8),
                 ],
@@ -197,391 +196,102 @@ class _CurrencyViewState extends State<CurrencyView> {
                   builder: (context, converterState) {
                     return Column(
                       children: [
-                        // ===== CURRENCY CONVERTER SECTION =====
-                        if (converterState is CurrencyConverterLoaded)
-                          Container(
-                            margin: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Theme.of(context).primaryColor,
-                                  Theme.of(context)
-                                      .primaryColor
-                                      .withValues(alpha: 0.7),
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme.of(context)
-                                      .primaryColor
-                                      .withValues(alpha: 0.3),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Currency A Input Section
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        "Từ tiền tệ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: secondaryColor,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: _isDarkMode
-                                              ? neutralDarkColor.withValues(
-                                                  alpha: 0.1,
-                                                )
-                                              : neutralColor.withValues(
-                                                  alpha: 0.1,
-                                                ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          border: Border.all(
-                                            color: _isDarkMode
-                                                ? neutralDarkColor
-                                                : neutralColor,
-                                            width: 1,
-                                          ),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical: 2,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            // Dropdown for Currency A
-                                            Expanded(
-                                              flex: 1,
-                                              child: DropdownButton<String>(
-                                                value: converterState
-                                                    .selectedCurrency,
-                                                hint: const Text(
-                                                  "Chọn",
-                                                  style: TextStyle(
-                                                    color: secondaryColor,
-                                                  ),
-                                                ),
-                                                isExpanded: true,
-                                                underline: const SizedBox(),
-                                                dropdownColor:
-                                                    Theme.of(context)
-                                                        .primaryColor,
-                                                style: const TextStyle(
-                                                  color: secondaryColor,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                onChanged: (newValue) {
-                                                  if (newValue != null) {
-                                                    context
-                                                        .read<
-                                                            CurrencyConverterBloc>()
-                                                        .add(
-                                                          SelectSourceCurrencyEvent(
-                                                            currencyCode:
-                                                                newValue,
-                                                          ),
-                                                        );
-                                                  }
-                                                },
-                                                items: list
-                                                    .map<
-                                                        DropdownMenuItem<
-                                                            String>>((
-                                                  Currency currency,
-                                                ) {
-                                                  return DropdownMenuItem<
-                                                      String>(
-                                                    value: currency.code,
-                                                    child: Text(
-                                                      currency.code,
-                                                      style: const TextStyle(
-                                                        color: secondaryColor,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            // Input Field for Amount
-                                            Expanded(
-                                              flex: 2,
-                                              child: TextField(
-                                                controller:
-                                                    _amountController,
-                                                keyboardType: const TextInputType
-                                                    .numberWithOptions(
-                                                  decimal: true,
-                                                ),
-                                                style: const TextStyle(
-                                                  color: secondaryColor,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                                decoration: InputDecoration(
-                                                  hintText: "0.00",
-                                                  hintStyle: const TextStyle(
-                                                    color: secondaryColor,
-                                                    fontSize: 14,
-                                                  ),
-                                                  border: InputBorder.none,
-                                                  contentPadding:
-                                                      const EdgeInsets
-                                                          .symmetric(
-                                                    horizontal: 8,
-                                                    vertical: 12,
-                                                  ),
-                                                ),
-                                                onChanged: (value) {
-                                                  context
-                                                      .read<
-                                                          CurrencyConverterBloc>()
-                                                      .add(
-                                                        UpdateConversionAmountEvent(
-                                                          amount: value,
-                                                        ),
-                                                      );
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                        // ===== CURRENCY CONVERTER SECTION (FIXED AT TOP) =====
+                        ConvertWidget(
+                          isDarkMode: _isDarkMode,
+                          currencies: list,
+                        ),
+                        // ===== SCROLLABLE CONTENT =====
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                // Last Updated Time
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
                                   ),
-                                  const SizedBox(height: 16),
-                                  // Arrow/Exchange Icon
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: _isDarkMode
-                                            ? neutralDarkColor.withValues(
-                                                alpha: 0.2,
-                                              )
-                                            : neutralColor.withValues(
-                                                alpha: 0.2,
-                                              ),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Icon(
-                                        Icons.arrow_downward,
-                                        color: _isDarkMode
-                                            ? neutralDarkColor
-                                            : neutralColor,
-                                        size: 20,
-                                      ),
+                                  child: Text(
+                                    currencyState.lastUpdatedText,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: currencyState.isFromCache
+                                          ? Colors.orangeAccent
+                                          : Colors.grey,
                                     ),
                                   ),
-                                  const SizedBox(height: 16),
-                                  // Currency B Output Section
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Đến tiền tệ (${converterState.destinationCurrency})",
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: secondaryColor,
-                                          fontWeight: FontWeight.w500,
+                                ),
+                                // Currency List
+                                if (list.isEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.all(32.0),
+                                    child: Text(context.tr('no_data')),
+                                  )
+                                else
+                                  ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: list.length,
+                                    itemBuilder: (context, index) {
+                                      final currency = list[index];
+                                      return Card(
+
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 6,
                                         ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: _isDarkMode
-                                              ? neutralDarkColor.withValues(
-                                                  alpha: 0.1,
-                                                )
-                                              : neutralColor.withValues(
-                                                  alpha: 0.1,
-                                                ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          border: Border.all(
-                                            color: _isDarkMode
-                                                ? neutralDarkColor
-                                                : neutralColor,
-                                            width: 1,
-                                          ),
-                                        ),
-                                        padding: const EdgeInsets.all(16),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "${converterState.convertedAmount.toStringAsFixed(2)}",
-                                                  style: const TextStyle(
-                                                    fontSize: 28,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: secondaryColor,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 8),
-                                                if (converterState
-                                                    .amount.isNotEmpty)
-                                                  Text(
-                                                    "${converterState.amount} ${converterState.selectedCurrency}",
-                                                    style: const TextStyle(
-                                                      fontSize: 12,
-                                                      color: secondaryColor,
-                                                    ),
-                                                  ),
-                                              ],
-                                            ),
-                                            // Destination Currency Dropdown
-                                            DropdownButton<String>(
-                                              value: converterState
-                                                  .destinationCurrency,
-                                              underline: const SizedBox(),
-                                              dropdownColor:
-                                                  Theme.of(context)
-                                                      .primaryColor,
-                                              style: const TextStyle(
-                                                color: secondaryColor,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
+                                        elevation: 0.1,
+                                        shadowColor: Colors.grey.withValues(alpha: 0.4),
+                                        child: ListTile(
+                                          leading: CircleAvatar(
+                                            // backgroundColor:
+                                            //     primaryColor,
+                                            child: Text(
+                                              currency.code.substring(
+                                                0,
+                                                currency.code.length > 2
+                                                    ? 2
+                                                    : currency.code.length,
                                               ),
-                                              onChanged: (newValue) {
-                                                if (newValue != null) {
-                                                  context
-                                                      .read<
-                                                          CurrencyConverterBloc>()
-                                                      .add(
-                                                        SelectDestinationCurrencyEvent(
-                                                          currencyCode:
-                                                              newValue,
-                                                        ),
-                                                      );
-                                                }
-                                              },
-                                              items: list
-                                                  .map<
-                                                      DropdownMenuItem<
-                                                          String>>((
-                                                Currency currency,
-                                              ) {
-                                                return DropdownMenuItem<
-                                                    String>(
-                                                  value: currency.code,
-                                                  child: Text(
-                                                    currency.code,
-                                                    style: const TextStyle(
-                                                      color: secondaryColor,
-                                                    ),
-                                                  ),
-                                                );
-                                              }).toList(),
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                               // color: neutralColor,
+                                              ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        // Last Updated Time
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          child: Text(
-                            currencyState.lastUpdatedText,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: currencyState.isFromCache
-                                  ? Colors.orangeAccent
-                                  : Colors.grey,
-                            ),
-                          ),
-                        ),
-                        // Currency List
-                        Expanded(
-                          child: list.isEmpty
-                              ? const Center(
-                                  child:
-                                      Text("Không có dữ liệu hiển thị."),
-                                )
-                              : ListView.builder(
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  itemCount: list.length,
-                                  itemBuilder: (context, index) {
-                                    final currency = list[index];
-                                    return Card(
-                                      margin: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 6,
-                                      ),
-                                      elevation: 2,
-                                      child: ListTile(
-                                        leading: CircleAvatar(
-                                          backgroundColor:
-                                              Colors.blue.shade100,
-                                          child: Text(
-                                            currency.code.substring(
-                                              0,
-                                              currency.code.length > 2
-                                                  ? 2
-                                                  : currency.code.length,
-                                            ),
+                                          ),
+                                          title: Text(
+                                            currency.code,
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.blue,
+                                              fontSize: 16,
                                             ),
                                           ),
-                                        ),
-                                        title: Text(
-                                          currency.code,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
+                                          trailing: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                currency.rate
+                                                    .toStringAsFixed(4),
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: primaryColor,
+                                                ),
+                                              ),
+                                              Text(context.tr('base_currency'), style: TextStyle(color: tertiaryColor, fontSize: 10),)
+                                            ],
                                           ),
                                         ),
-                                        subtitle: const Text(
-                                            "Base Currency: USD"),
-                                        trailing: Text(
-                                          currency.rate
-                                              .toStringAsFixed(4),
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.green,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
+                                      );
+                                    },
+                                  ),
+                                const SizedBox(height: 16),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     );

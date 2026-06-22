@@ -26,6 +26,12 @@ abstract class AppTheme {
           color: primaryColor,
         ),
       ),
+      textTheme: TextTheme(
+        bodyLarge: TextStyle(
+          color: secondaryColor,
+          fontSize: 16,
+        ),
+      ),
       cardTheme: CardThemeData(
         color: Colors.white,
         elevation: 2,
@@ -61,8 +67,8 @@ abstract class AppTheme {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: Colors.grey.shade100,
+        filled: false,
+        fillColor: Colors.transparent,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
@@ -73,7 +79,7 @@ abstract class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: primaryColor, width: 2),
+          borderSide:  BorderSide(color: neutralColor, width: 2),
         ),
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
@@ -108,6 +114,12 @@ abstract class AppTheme {
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
         elevation: 0,
+      ),
+      textTheme: TextTheme(
+        bodyLarge: TextStyle(
+          color: neutralColor,
+          fontSize: 16,
+        ),
       ),
       cardTheme: CardThemeData(
         color: const Color(0xFF1E1E1E),
@@ -144,8 +156,8 @@ abstract class AppTheme {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: Colors.grey.shade800,
+        filled: false,
+        fillColor: Colors.transparent,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
@@ -156,7 +168,10 @@ abstract class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: primaryColor, width: 2),
+          borderSide: BorderSide(color: neutralDarkColor, width: 2),
+        ),
+        hintStyle: TextStyle(
+          color: neutralColor,
         ),
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
