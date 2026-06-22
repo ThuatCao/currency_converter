@@ -246,8 +246,8 @@ class _CurrencyViewState extends State<CurrencyView> {
                                         shadowColor: Colors.grey.withValues(alpha: 0.4),
                                         child: ListTile(
                                           leading: CircleAvatar(
-                                            // backgroundColor:
-                                            //     primaryColor,
+                                            backgroundColor:
+                                                Theme.of(context).primaryColorLight,
                                             child: Text(
                                               currency.code.substring(
                                                 0,

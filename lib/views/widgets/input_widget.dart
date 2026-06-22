@@ -75,14 +75,14 @@ class InputWidget extends StatelessWidget {
                     TextField(
                       controller: sourceSearchController,
                       style: const TextStyle(
-                        color: secondaryColor,
+                      //  color: Colors.white,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
                       decoration: InputDecoration(
                         hintText: context.tr('select'),
                         hintStyle: const TextStyle(
-                          color: secondaryColor,
+                          color: Colors.white,
                         ),
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.symmetric(
@@ -99,7 +99,7 @@ class InputWidget extends StatelessWidget {
                           maxHeight: 150,
                         ),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
+                          color: Theme.of(context).highlightColor,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: ListView.builder(
@@ -112,7 +112,7 @@ class InputWidget extends StatelessWidget {
                               title: Text(
                                 currency.code,
                                 style: const TextStyle(
-                                  color: secondaryColor,
+                                 // color: secondaryColor,
                                   fontSize: 12,
                                 ),
                               ),

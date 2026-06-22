@@ -111,7 +111,7 @@ class _ConvertWidgetState extends State<ConvertWidget> {
                       //     Theme.of(context).primaryColor.withValues(alpha: 0.7),
                       //   ],
                       // ),
-                      color: Color(0xFF1E1E1E).withValues(alpha: 0.5),
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(16),
                       // boxShadow: [
                       //   BoxShadow(

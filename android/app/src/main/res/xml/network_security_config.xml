@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Network security configuration for the Android app.
+
+  NOTE: This file currently enables cleartextTrafficPermitted for all domains to
+  make development and testing of HTTP endpoints easier. This is NOT recommended
+  for production builds. For production, restrict cleartext to specific domains
+  or remove it entirely and use HTTPS everywhere.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
+
