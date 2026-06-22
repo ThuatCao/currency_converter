@@ -1,15 +1,22 @@
+import 'package:currency_converter/data/database.dart';
+import 'package:currency_converter/di.dart';
 import 'package:currency_converter/theme/app_theme.dart';
 import 'package:currency_converter/views/currency_view.dart';
 import 'package:flutter/material.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  // load theme from db if not set light is default
-  runApp( MyApp(initialDarkTheme:false,));
+  await setupDependencies();
+  
+  // Load theme preference from database
+  final db = locator<AppDatabase>();
+  final isDarkMode = await db.isDarkMode();
+  
+  runApp(MyApp(initialDarkTheme: isDarkMode));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key,required this.initialDarkTheme});
+  const MyApp({super.key, required this.initialDarkTheme});
   final bool initialDarkTheme;
 
   @override
@@ -30,17 +37,20 @@ class _MyAppState extends State<MyApp> {
       _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
     });
 
-    //update to save theme to db later
+    // Save theme preference to database
+    final db = locator<AppDatabase>();
+    await db.setDarkMode(isDark);
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "Currency Freak Offline-First App",
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme(),
       darkTheme: AppTheme.darkTheme(),
       themeMode: _themeMode,
-      home: CurrencyView(),
+      home: CurrencyScreen(onThemeToggle: _toggleTheme),
     );
   }
 }

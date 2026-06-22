@@ -1,4 +1,12 @@
 part of 'currency_bloc.dart';
 
-@immutable
-sealed class CurrencyEvent {}
+
+abstract class CurrencyEvent {}
+
+class InitializedAppCurrencyEvent extends CurrencyEvent {}
+
+class AutoRetryCountdownTick extends CurrencyEvent {
+  final int remainingTicks;
+
+  AutoRetryCountdownTick({required this.remainingTicks});
+}
