@@ -53,110 +53,120 @@ class OutputWidget extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             color: isDarkMode
-                ? neutralDarkColor.withValues(
-                    alpha: 0.1,
-                  )
-                : neutralColor.withValues(
-                    alpha: 0.1,
-                  ),
+                ? neutralDarkColor.withValues(alpha: 0.1)
+                : neutralColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isDarkMode ? neutralDarkColor : neutralColor,
-              width: 1,
-            ),
+            // border: Border.all(
+            //   color: isDarkMode ? neutralDarkColor : neutralColor,
+            //   width: 1,
+            // ),
           ),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    convertedAmount.toStringAsFixed(4),
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: secondaryColor,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  if (amount.isNotEmpty)
-                    Text(
-                      "$amount $selectedCurrency",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: secondaryColor,
-                      ),
-                    ),
-                ],
-              ),
-              // Searchable Destination Currency Dropdown
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextField(
-                      controller: destinationSearchController,
+                    Text(
+                      convertedAmount.toStringAsFixed(4),
                       style: const TextStyle(
-                        color: secondaryColor,
-                        fontSize: 16,
+                        fontSize: 28,
                         fontWeight: FontWeight.bold,
+                        color: secondaryColor,
                       ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 0,
-                          vertical: 0,
-                        ),
-                        hintText: destinationCurrency,
-                        hintStyle: const TextStyle(
-                          color: secondaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onChanged: onDestinationSearchChanged,
-                      onTap: onDestinationTap,
                     ),
-                    if (showDestinationDropdown &&
-                        filteredDestinationCurrencies.isNotEmpty)
-                      Container(
-                        alignment: Alignment.centerRight,
-                        constraints: const BoxConstraints(
-                          maxHeight: 150,
-                          maxWidth: 150,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: filteredDestinationCurrencies.length,
-                          itemBuilder: (context, index) {
-                            final currency =
-                                filteredDestinationCurrencies[index];
-                            return ListTile(
-                              dense: true,
-                              title: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  currency.code,
-                                  style: const TextStyle(
-                                    color: secondaryColor,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                              onTap: () {
-                                onDestinationCurrencySelected(currency);
-                              },
-                            );
-                          },
+                    const SizedBox(height: 8),
+                    if (amount.isNotEmpty)
+                      Text(
+                        "$amount $selectedCurrency",
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: secondaryColor,
                         ),
                       ),
                   ],
+                ),
+              ),
+              // Searchable Destination Currency Dropdown
+              SizedBox(
+                width: 80,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    // border: Border.all(
+                    //   color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
+                    //   width: 1,
+                    // ),
+                    color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.5),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      TextField(
+                        controller: destinationSearchController,
+                        style: const TextStyle(
+                         // color: secondaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 0,
+                            vertical: 0,
+                          ),
+                          hintText: destinationCurrency,
+                          hintStyle: const TextStyle(
+                            color: secondaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onChanged: onDestinationSearchChanged,
+                        onTap: onDestinationTap,
+                      ),
+                      if (showDestinationDropdown &&
+                          filteredDestinationCurrencies.isNotEmpty)
+                        Container(
+                          alignment: Alignment.centerRight,
+                          constraints: const BoxConstraints(
+                            maxHeight: 200,
+                            maxWidth: 80,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: filteredDestinationCurrencies.length,
+                            itemBuilder: (context, index) {
+                              final currency =
+                                  filteredDestinationCurrencies[index];
+                              return ListTile(
+                                dense: true,
+                                title: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    currency.code,
+                                    style: const TextStyle(
+                                      color: secondaryColor,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                                onTap: () {
+                                  onDestinationCurrencySelected(currency);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -166,5 +176,3 @@ class OutputWidget extends StatelessWidget {
     );
   }
 }
-
-

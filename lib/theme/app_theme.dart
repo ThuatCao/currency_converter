@@ -31,6 +31,10 @@ abstract class AppTheme {
           color: secondaryColor,
           fontSize: 16,
         ),
+        titleMedium: TextStyle(
+          color: primaryColor,
+          fontSize: 16,
+        ),
       ),
       cardTheme: CardThemeData(
         color: Colors.white,
@@ -70,16 +74,16 @@ abstract class AppTheme {
         filled: false,
         fillColor: Colors.transparent,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide:  BorderSide(color: neutralColor, width: 2),
+          borderRadius: BorderRadius.circular(12),
+          borderSide:  BorderSide(color: neutralColor, width: 1),
         ),
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
@@ -111,13 +115,20 @@ abstract class AppTheme {
       scaffoldBackgroundColor: neutralDarkColor,
       primaryColor: primaryColor,
       appBarTheme: AppBarTheme(
-        backgroundColor: primaryColor,
+        backgroundColor: Colors.black12,
         foregroundColor: Colors.white,
         elevation: 0,
+        titleTextStyle: TextStyle(
+          color: Colors.white,
+        ),
       ),
       textTheme: TextTheme(
         bodyLarge: TextStyle(
           color: neutralColor,
+          fontSize: 16,
+        ),
+        titleMedium: TextStyle(
+          color: primaryColor,
           fontSize: 16,
         ),
       ),
@@ -159,16 +170,16 @@ abstract class AppTheme {
         filled: false,
         fillColor: Colors.transparent,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: neutralDarkColor, width: 2),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: neutralDarkColor, width: 1),
         ),
         hintStyle: TextStyle(
           color: neutralColor,

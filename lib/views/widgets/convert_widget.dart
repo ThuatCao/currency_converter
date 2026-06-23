@@ -103,15 +103,14 @@ class _ConvertWidgetState extends State<ConvertWidget> {
                   return Container(
                     margin: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      // gradient: LinearGradient(
-                      //   begin: Alignment.topLeft,
-                      //   end: Alignment.bottomRight,
-                      //   colors: [
-                      //     Theme.of(context).primaryColor,
-                      //     Theme.of(context).primaryColor.withValues(alpha: 0.7),
-                      //   ],
-                      // ),
-                      color: Theme.of(context).primaryColor,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Theme.of(context).primaryColor,
+                          Theme.of(context).primaryColor.withValues(alpha: 0.7),
+                        ],
+                      ),
                       borderRadius: BorderRadius.circular(16),
                       // boxShadow: [
                       //   BoxShadow(

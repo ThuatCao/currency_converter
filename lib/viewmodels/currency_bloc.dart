@@ -66,7 +66,7 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
         }
         
         final freshData = await db.getAllCurrencies();
-        final String formattedDate = DateFormat('HH:mm dd/MM/yyyy)').format(DateTime.now());
+        final String formattedDate = DateFormat('HH:mm dd/MM/yyyy').format(DateTime.now());
         emit(CurrencyLoadSuccess(
           currencies: freshData,
           lastUpdatedText: formattedDate,

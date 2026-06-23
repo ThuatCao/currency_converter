@@ -48,56 +48,61 @@ class InputWidget extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             color: isDarkMode
-                ? neutralDarkColor.withValues(
-                    alpha: 0.1,
-                  )
-                : neutralColor.withValues(
-                    alpha: 0.1,
-                  ),
+                ? neutralDarkColor.withValues(alpha: 0.1)
+                : neutralColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isDarkMode ? neutralDarkColor : neutralColor,
-              width: 1,
-            ),
+            // border: Border.all(
+            //   color: isDarkMode ? neutralDarkColor : neutralColor,
+            //   width: 1,
+            // ),
           ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 2,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           child: Row(
             children: [
               // Searchable Dropdown for Currency A
-              Expanded(
-                flex: 1,
+              SizedBox(
+                width: 80,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextField(
-                      controller: sourceSearchController,
-                      style: const TextStyle(
-                      //  color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        // border: Border.all(
+                        //   color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
+                        //   width: 1,
+                        // ),
+                        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.5),
                       ),
-                      decoration: InputDecoration(
-                        hintText: context.tr('select'),
-                        hintStyle: const TextStyle(
-                          color: Colors.white,
+                      child: TextField(
+                        controller: sourceSearchController,
+                        style: const TextStyle(
+                          //  color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 0,
-                          vertical: 12,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          hintText: context.tr('select'),
+                          hintStyle: const TextStyle(color: Colors.white),
+                          // suffixIcon: IconButton(
+                          //   icon: const Icon(Icons.clear,size: 16),
+                          //   onPressed: () => sourceSearchController.clear(),
+                          // ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 5,
+                            vertical: 12,
+                          ),
                         ),
+                        onChanged: onSourceSearchChanged,
+                        onTap: onSourceTap,
                       ),
-                      onChanged: onSourceSearchChanged,
-                      onTap: onSourceTap,
                     ),
-                    if (showSourceDropdown && filteredSourceCurrencies.isNotEmpty)
+                    if (showSourceDropdown &&
+                        filteredSourceCurrencies.isNotEmpty)
                       Container(
-                        constraints: const BoxConstraints(
-                          maxHeight: 150,
-                        ),
+                        constraints: const BoxConstraints(maxHeight: 200),
                         decoration: BoxDecoration(
                           color: Theme.of(context).highlightColor,
                           borderRadius: BorderRadius.circular(8),
@@ -112,12 +117,13 @@ class InputWidget extends StatelessWidget {
                               title: Text(
                                 currency.code,
                                 style: const TextStyle(
-                                 // color: secondaryColor,
+                                  // color: secondaryColor,
                                   fontSize: 12,
                                 ),
                               ),
                               onTap: () {
                                 onSourceCurrencySelected(currency);
+                                FocusManager.instance.primaryFocus?.unfocus();
                               },
                             );
                           },
@@ -129,7 +135,6 @@ class InputWidget extends StatelessWidget {
               const SizedBox(width: 8),
               // Input Field for Amount
               Expanded(
-                flex: 2,
                 child: TextField(
                   controller: amountController,
                   keyboardType: const TextInputType.numberWithOptions(
@@ -162,5 +167,3 @@ class InputWidget extends StatelessWidget {
     );
   }
 }
-
-

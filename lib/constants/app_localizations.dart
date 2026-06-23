@@ -25,15 +25,20 @@ class AppLocalizations {
     'base_currency': 'Base Currency: USD',
     
     // Input widget
-    'from_currency': 'Từ tiền tệ',
+    'from_currency': 'Từ',
     'select': 'Chọn',
     'amount_hint': '0.00',
     
     // Output widget
-    'to_currency': 'Đến tiền tệ',
+    'to_currency': 'Đến',
     
     // Converter
     'exchange': 'Tỷ giá tính đơn vị',
+
+    'last_update': 'Cập nhật lần cuối',
+
+    'currency_list':"Danh sách tất cả Tỉ giá Tiền Tệ",
+    'view_more': "Xem thêm"
   };
 
   // English translations
@@ -55,15 +60,19 @@ class AppLocalizations {
     'base_currency': 'Base Currency: USD',
     
     // Input widget
-    'from_currency': 'From Currency',
+    'from_currency': 'From',
     'select': 'Select',
     'amount_hint': '0.00',
     
     // Output widget
-    'to_currency': 'To Currency',
+    'to_currency': 'To',
     
     // Converter
     'exchange': 'Exchange Rate',
+
+    'last_update': 'Last Update',
+    'currency_list':"List All Currencies",
+    'view_more': "View more"
   };
 
   static final LocalizationsDelegate<AppLocalizations> delegate =
