@@ -5,8 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants/app_localizations.dart';
 import '../constants/color_util.dart';
 import '../di.dart';
-import '../viewmodels/currency_bloc.dart';
-
+import '../viewmodels/currency/currency_bloc.dart';
 class ListCurrencyScreen extends StatelessWidget {
   const ListCurrencyScreen({super.key});
 
