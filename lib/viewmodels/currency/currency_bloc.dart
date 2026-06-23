@@ -5,8 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
-import '../data/database.dart';
-import '../data/dio_client.dart';
+import '../../data/database.dart';
+import '../../data/dio_client.dart';
 
 part 'currency_event.dart';
 part 'currency_state.dart';

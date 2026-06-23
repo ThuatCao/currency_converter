@@ -1,6 +1,7 @@
 import 'package:currency_converter/data/database.dart';
-import 'package:currency_converter/viewmodels/currency_bloc.dart';
-import 'package:currency_converter/viewmodels/currency_converter_bloc.dart';
+import 'package:currency_converter/viewmodels/currency/currency_bloc.dart';
+import 'package:currency_converter/viewmodels/converter/currency_converter_bloc.dart';
+import 'package:currency_converter/viewmodels/network/network_bloc.dart';
 import 'package:currency_converter/viewmodels/theme/theme_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:currency_converter/data/dio_client.dart';
@@ -13,6 +14,7 @@ Future<void> setupDependencies() async {
 
   locator.registerSingleton<AppDatabase>(AppDatabase());
 
+
   locator.registerFactory<CurrencyBloc>(
     () => CurrencyBloc(
       db: locator<AppDatabase>(),
@@ -23,7 +25,14 @@ Future<void> setupDependencies() async {
   locator.registerFactory<CurrencyConverterBloc>(
     () => CurrencyConverterBloc(database: locator<AppDatabase>()),
   );
+
   locator.registerFactory<ThemeBloc>(
     () => ThemeBloc(database: locator<AppDatabase>()),
   );
+
+  locator.registerFactory<NetworkBloc>(
+    () => NetworkBloc(),
+  );
+
+
 }

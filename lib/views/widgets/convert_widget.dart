@@ -1,6 +1,6 @@
 import 'package:currency_converter/constants/color_util.dart';
 import 'package:currency_converter/data/database.dart';
-import 'package:currency_converter/viewmodels/currency_converter_bloc.dart';
+import 'package:currency_converter/viewmodels/converter/currency_converter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

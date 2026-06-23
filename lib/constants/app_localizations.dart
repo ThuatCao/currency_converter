@@ -38,7 +38,9 @@ class AppLocalizations {
     'last_update': 'Cập nhật lần cuối',
 
     'currency_list':"Danh sách tất cả Tỉ giá Tiền Tệ",
-    'view_more': "Xem thêm"
+    'view_more': "Xem thêm",
+    'you_are_offline': 'Bạn đang ngoại tuyến',
+    'you_are_online': 'Đã khôi phục kết nối. Đang cập nhật dữ liệu...'
   };
 
   // English translations
@@ -72,7 +74,9 @@ class AppLocalizations {
 
     'last_update': 'Last Update',
     'currency_list':"List All Currencies",
-    'view_more': "View more"
+    'view_more': "View more",
+    'you_are_offline': 'You are offline',
+    'you_are_online': 'You are online. Updating data...'
   };
 
   static final LocalizationsDelegate<AppLocalizations> delegate =
