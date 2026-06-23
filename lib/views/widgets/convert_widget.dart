@@ -147,6 +147,13 @@ class _ConvertWidgetState extends State<ConvertWidget> {
                               });
                             },
                             onSourceTap: () {
+                              Future.delayed(const Duration(milliseconds: 50), () {
+                                if (_sourceSearchController.text.isNotEmpty) {
+                                  _sourceSearchController.selection = TextSelection.fromPosition(
+                                    TextPosition(offset: _sourceSearchController.text.length),
+                                  );
+                                }
+                              });
                               setState(() {
                                 _showSourceDropdown = true;
                                 _filteredSourceCurrencies =
@@ -229,6 +236,13 @@ class _ConvertWidgetState extends State<ConvertWidget> {
                               });
                             },
                             onDestinationTap: () {
+                              Future.delayed(const Duration(milliseconds: 50), () {
+                                if (_destinationSearchController.text.isNotEmpty) {
+                                  _destinationSearchController.selection = TextSelection.fromPosition(
+                                    TextPosition(offset: _destinationSearchController.text.length),
+                                  );
+                                }
+                              });
                               setState(() {
                                 _showDestinationDropdown = true;
                                 _filteredDestinationCurrencies =

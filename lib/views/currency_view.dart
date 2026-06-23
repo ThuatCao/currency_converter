@@ -38,9 +38,22 @@ class CurrencyView extends StatefulWidget {
   State<CurrencyView> createState() => _CurrencyViewState();
 }
 
-class _CurrencyViewState extends State<CurrencyView> {
+class _CurrencyViewState extends State<CurrencyView>
+    with TickerProviderStateMixin {
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+  }
+
   @override
   void dispose() {
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -217,14 +230,27 @@ class _CurrencyViewState extends State<CurrencyView> {
                                           style: TextStyle(fontSize: 14),
                                         ),
                                         Expanded(child: SizedBox()),
-                                        IconButton(
-                                          icon: const Icon(Icons.refresh),
-                                          onPressed: () {
-                                            context.read<CurrencyBloc>().add(
-                                              InitializedAppCurrencyEvent(),
-                                            );
-                                          },
-                                          tooltip: context.tr('reload'),
+                                        SizedBox(
+                                          width: 40,
+                                          height: 40,
+                                          child: Builder(
+                                            builder: (context) {
+                                              return RotationTransition(
+                                                turns: _animationController,
+                                                // Gắn hiệu ứng xoay
+                                                child: IconButton(
+                                                  icon: const Icon(Icons.refresh),
+                                                  onPressed: () {
+                                                    _animationController.forward(from: 0.0);
+                                                    context.read<CurrencyBloc>().add(
+                                                      InitializedAppCurrencyEvent(),
+                                                    );
+                                                  },
+                                                  tooltip: context.tr('reload'),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -257,25 +283,24 @@ class _CurrencyViewState extends State<CurrencyView> {
                                               Expanded(child: SizedBox()),
                                               InkWell(
                                                 onTap: () {
-                                                  // Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //     builder: (context) => BlocProvider.value(
-                                                  //       value: context.read<CurrencyBloc>(),
-                                                  //         child: ListCurrencyView(),
-                                                  //   ),
-                                                  //   )
-                                                  // );
                                                   Navigator.push(
                                                     context,
-                                                    MaterialPageRoute(builder: (context) => const ListCurrencyScreen()),
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const ListCurrencyScreen(),
+                                                    ),
                                                   );
                                                 },
                                                 child: Row(
                                                   children: [
-                                                    Text(context.tr('view_more')),
+                                                    Text(
+                                                      context.tr('view_more'),
+                                                    ),
                                                     SizedBox(width: 4),
-                                                    const Icon(Icons.arrow_forward_ios, size: 14),
+                                                    const Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      size: 14,
+                                                    ),
                                                   ],
                                                 ),
                                               ),

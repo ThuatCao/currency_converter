@@ -160,6 +160,7 @@ class OutputWidget extends StatelessWidget {
                                 ),
                                 onTap: () {
                                   onDestinationCurrencySelected(currency);
+                                  FocusManager.instance.primaryFocus?.unfocus();
                                 },
                               );
                             },

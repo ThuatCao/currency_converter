@@ -8,7 +8,7 @@ import '../di.dart';
 import '../viewmodels/currency_bloc.dart';
 
 class ListCurrencyScreen extends StatelessWidget {
-  const ListCurrencyScreen({super.key,});
+  const ListCurrencyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +28,32 @@ class ListCurrencyView extends StatefulWidget {
   State<ListCurrencyView> createState() => _ListCurrencyViewState();
 }
 
-class _ListCurrencyViewState extends State<ListCurrencyView> {
+class _ListCurrencyViewState extends State<ListCurrencyView>
+    with TickerProviderStateMixin {
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
           context.tr('currency_list'),
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ),
       body: BlocConsumer<CurrencyBloc, CurrencyState>(
@@ -134,14 +149,23 @@ class _ListCurrencyViewState extends State<ListCurrencyView> {
                               style: TextStyle(fontSize: 14),
                             ),
                             Expanded(child: SizedBox()),
-                            IconButton(
-                              icon: const Icon(Icons.refresh),
-                              onPressed: () {
-                                context.read<CurrencyBloc>().add(
-                                  InitializedAppCurrencyEvent(),
+                            Builder(
+                              builder: (context) {
+                                return RotationTransition(
+                                  turns: _animationController,
+                                  // Gắn hiệu ứng xoay
+                                  child: IconButton(
+                                    icon: const Icon(Icons.refresh),
+                                    onPressed: () {
+                                      _animationController.forward(from: 0.0);
+                                      context.read<CurrencyBloc>().add(
+                                        InitializedAppCurrencyEvent(),
+                                      );
+                                    },
+                                    tooltip: context.tr('reload'),
+                                  ),
                                 );
                               },
-                              tooltip: context.tr('reload'),
                             ),
                           ],
                         ),
