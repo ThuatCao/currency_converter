@@ -2,6 +2,8 @@ import 'package:currency_converter/constants/color_util.dart';
 import 'package:currency_converter/constants/app_localizations.dart';
 import 'package:currency_converter/viewmodels/converter/currency_converter_bloc.dart';
 import 'package:currency_converter/views/widgets/currency_item_widget.dart';
+import 'package:currency_converter/views/widgets/first_load_failure_widget.dart';
+import 'package:currency_converter/views/widgets/first_loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -68,6 +70,7 @@ class _CurrencyViewState extends State<CurrencyView>
       duration: Duration(microseconds: 400),
       curve: Curves.easeInOut,
       child: Scaffold(
+        // listen network active to auto reload data
         body: BlocListener<NetworkBloc, NetworkState>(
           listener: (context, state) {
             if (state is NetworkReEnabled) {
@@ -86,66 +89,21 @@ class _CurrencyViewState extends State<CurrencyView>
                 listener: (context, state) {},
                 builder: (context, currencyState) {
                   if (currencyState is CurrencyFirstLoadProgress) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const CircularProgressIndicator(color: primaryColor),
-                          const SizedBox(height: 16),
-                          Text(context.tr('loading_rates')),
-                        ],
-                      ),
-                    );
+                    return FirstLoadingWidget();
                   }
-
                   if (currencyState is CurrencyFirstLoadFailure) {
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.wifi_off,
-                              size: 64,
-                              color: Colors.redAccent,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              currencyState.message,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              "${context.tr('retry_in')} ${currencyState.retryCountdown} ${context.tr('retry_seconds')}",
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                context.read<CurrencyBloc>().add(
-                                  InitializedAppCurrencyEvent(),
-                                );
-                              },
-                              icon: const Icon(Icons.refresh),
-                              label: Text(context.tr('retry_now')),
-                            ),
-                          ],
-                        ),
-                      ),
+                    return FirstLoadFailureWidget(
+                      currencyState: currencyState,
+                      onRetry: () {
+                        context.read<CurrencyBloc>().add(
+                          InitializedAppCurrencyEvent(),
+                        );
+                      },
                     );
                   }
 
                   if (currencyState is CurrencyLoadSuccess) {
                     final list = currencyState.currencies;
-
                     // Initialize converter bloc with currencies
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       final converterBloc = context
@@ -266,7 +224,6 @@ class _CurrencyViewState extends State<CurrencyView>
                                                     return RotationTransition(
                                                       turns:
                                                           _animationController,
-                                                      // Gắn hiệu ứng xoay
                                                       child: IconButton(
                                                         icon: const Icon(
                                                           Icons.refresh,
@@ -315,7 +272,7 @@ class _CurrencyViewState extends State<CurrencyView>
                                                 child: Row(
                                                   children: [
                                                     Text(
-                                                      '20/${list.length} ${context.tr('currencies')}',
+                                                      '${context.tr('currencies')} (20/${list.length})',
                                                       style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,

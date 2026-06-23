@@ -25,6 +25,9 @@ abstract class AppTheme {
         titleTextStyle: TextStyle(
           color: primaryColor,
         ),
+        iconTheme: const IconThemeData(
+          color: primaryColor,
+        ),
       ),
       textTheme: TextTheme(
         bodyLarge: TextStyle(
@@ -121,6 +124,7 @@ abstract class AppTheme {
         titleTextStyle: TextStyle(
           color: Colors.white,
         ),
+
       ),
       textTheme: TextTheme(
         bodyLarge: TextStyle(

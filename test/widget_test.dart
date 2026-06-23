@@ -7,24 +7,32 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:currency_converter/main.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:currency_converter/constants/app_localizations.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('AppLocalizations provides Vietnamese translation in widget tree',
+      (WidgetTester tester) async {
+    // Build a MaterialApp that uses AppLocalizations as a delegate
+    await tester.pumpWidget(MaterialApp(
+      locale: const Locale('vi', 'VN'),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('vi', 'VN'), Locale('en', 'US')],
+      home: Builder(builder: (context) {
+        final text = AppLocalizations.of(context).translate('exchange_rate');
+        return Scaffold(body: Center(child: Text(text)));
+      }),
+    ));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Allow localization futures to resolve
+    await tester.pumpAndSettle();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Expect the Vietnamese translation to be shown
+    expect(find.text('Tỷ giá Tiền Tệ'), findsOneWidget);
   });
 }

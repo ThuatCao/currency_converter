@@ -48,8 +48,8 @@ class InputWidget extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             color: isDarkMode
-                ? neutralDarkColor.withValues(alpha: 0.1)
-                : neutralColor.withValues(alpha: 0.1),
+                ? neutralDarkColor.withValues(alpha: 0.3)
+                : neutralColor.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12),
             // border: Border.all(
             //   color: isDarkMode ? neutralDarkColor : neutralColor,

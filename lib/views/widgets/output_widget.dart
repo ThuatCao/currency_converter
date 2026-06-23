@@ -53,8 +53,8 @@ class OutputWidget extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             color: isDarkMode
-                ? neutralDarkColor.withValues(alpha: 0.1)
-                : neutralColor.withValues(alpha: 0.1),
+                ? neutralDarkColor.withValues(alpha: 0.3)
+                : neutralColor.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12),
             // border: Border.all(
             //   color: isDarkMode ? neutralDarkColor : neutralColor,

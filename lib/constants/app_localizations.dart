@@ -10,7 +10,7 @@ class AppLocalizations {
   static const Map<String, String> _viTranslations = {
     // App title
     'app_title': 'Currency Freak Offline-First App',
-    
+
     // Currency screen
     'exchange_rate': 'Tỷ giá Tiền Tệ',
     'loading_rates': 'Đang đồng bộ tỷ giá lần đầu từ Server...',
@@ -23,31 +23,32 @@ class AppLocalizations {
     'dark_mode': 'Dark Mode',
     'no_data': 'Không có dữ liệu hiển thị.',
     'base_currency': 'Base Currency: USD',
-    
+
     // Input widget
     'from_currency': 'Từ',
     'select': 'Chọn',
     'amount_hint': '0.00',
-    
+
     // Output widget
     'to_currency': 'Đến',
-    
+
     // Converter
     'exchange': 'Tỷ giá tính đơn vị',
 
     'last_update': 'Cập nhật lần cuối',
 
-    'currency_list':"Danh sách tất cả Tỉ giá Tiền Tệ",
+    'currency_list': "Danh sách tất cả Tỉ giá Tiền Tệ",
     'view_more': "Xem thêm",
     'you_are_offline': 'Bạn đang ngoại tuyến',
-    'you_are_online': 'Đã khôi phục kết nối. Đang cập nhật dữ liệu...'
+    'you_are_online': 'Đã khôi phục kết nối. Đang cập nhật dữ liệu...',
+    'currencies': 'Danh sách Tiền Tệ',
   };
 
   // English translations
   static const Map<String, String> _enTranslations = {
     // App title
     'app_title': 'Currency Freak Offline-First App',
-    
+
     // Currency screen
     'exchange_rate': 'Exchange Rate',
     'loading_rates': 'Syncing exchange rates for the first time from Server...',
@@ -60,23 +61,24 @@ class AppLocalizations {
     'dark_mode': 'Dark Mode',
     'no_data': 'No data available.',
     'base_currency': 'Base Currency: USD',
-    
+
     // Input widget
     'from_currency': 'From',
     'select': 'Select',
     'amount_hint': '0.00',
-    
+
     // Output widget
     'to_currency': 'To',
-    
+
     // Converter
     'exchange': 'Exchange Rate',
 
     'last_update': 'Last Update',
-    'currency_list':"List All Currencies",
+    'currency_list': "List All Currencies",
     'view_more': "View more",
     'you_are_offline': 'You are offline',
-    'you_are_online': 'You are online. Updating data...'
+    'you_are_online': 'You are online. Updating data...',
+    'currencies': 'Currencies',
   };
 
   static final LocalizationsDelegate<AppLocalizations> delegate =
@@ -96,7 +98,8 @@ class AppLocalizations {
   }
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -121,5 +124,3 @@ extension AppLocalizationsExtension on BuildContext {
     return AppLocalizations.of(this).translate(key);
   }
 }
-
-
